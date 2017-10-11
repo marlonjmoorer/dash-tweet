@@ -9,8 +9,10 @@
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
+    "axios": "^0.16.2",
     "socket.io-client": "^2.0.3",
-    "vue": "^2.4.4"
+    "vue": "^2.4.4",
+    "vuetify": "^0.16.5"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
