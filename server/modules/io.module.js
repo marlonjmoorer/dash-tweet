@@ -8,12 +8,16 @@ module.exports=(server)=>{
     io.on("connection",(client)=>{
         console.log("connected")
         client.on("init",(account)=>{
-            var twit = twitter.createClient(account)
+            
             try {
+                var twit = twitter.createClient(account)
                 var stream= twit.stream("user",{})
                 stream.on("data",(tweet)=>{
                 client.emit("tweet",tweet)
                 })
+                stream.on('error', function(error) {
+                    throw error;
+                });
             } catch (error) {
                 console.error(error)
             }

@@ -35,9 +35,9 @@ export default {
     props:['account'],
     components:{Tweet},
     mounted(){
-       axios.post("timeline",{account:this.account}).then(res=>{
+      // axios.post("api/timeline",{account:this.account}).then(res=>{
          
-       })
+       //})
        let socket= io({path:"/io"})
        socket.emit("init",this.account)
        socket.on("tweet",(tweet)=>{

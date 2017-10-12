@@ -48,18 +48,19 @@ module.exports = {
    // noInfo: true,
     contentBase: "./client",
     proxy: {
+      '/io/*': {
+        target: 'ws://localhost:4000',
+        ws: true,
+      },
       '/api/*': {
         target: 'http://localhost:4000',
         secure: false,
         changeOrigin: true,
         pathRewrite: {
-        '^/api': ''
+        //'^/api': ''
         }
       },
-      '/io/*': {
-        target: 'ws://localhost:4000',
-        ws: true,
-      },
+      
 
     }
   },
