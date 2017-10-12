@@ -54,7 +54,12 @@ module.exports = {
         pathRewrite: {
         '^/api': ''
         }
-      }
+      },
+      '/io/*': {
+        target: 'ws://localhost:4000',
+        ws: true,
+      },
+
     }
   },
   

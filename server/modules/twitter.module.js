@@ -1,7 +1,7 @@
 const TwitterStrategy = require("passport-twitter").Strategy
 var mongojs = require('mongojs')
-const {users}= require('./db');
-const {twitterAuth} = require('./config');
+const {users}= require('../db');
+const {twitterAuth} = require('../config');
 var Twitter = require('twitter');
 
 
@@ -23,7 +23,6 @@ const saveUser = (access_token_key, access_token_secret, profile, cb) => {
             return cb(null, profile)
         }
     })
-   // return cb(null, profile)
 }
 module.exports={
     Strategy:new TwitterStrategy({

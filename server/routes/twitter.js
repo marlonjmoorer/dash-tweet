@@ -4,7 +4,7 @@ const {users}= require('../db');
 
 var router = express.Router()
 var passport = require('passport');
-const {Strategy,createClient} = require('../twitter.module');
+const {Strategy,createClient} = require('../modules/twitter.module');
 
 router.use(passport.initialize());
 router.use(passport.session());

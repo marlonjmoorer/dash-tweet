@@ -16,11 +16,19 @@ app.use(parser.urlencoded({extended:true}))
 var cors = require('cors')
 app.use(cors())
 //app.use(express.static(path.join(__dirname,"..",'client')));
+
+
+
+
 app.get("/",(req,res)=>{
     res.send("good")
 })
 app.use("/twitter",require('./routes/twitter'));
-app.listen(port,()=>{
-    console.log(path.join(__dirname,"..",'client'))
+
+const server=app.listen(port,()=>{
+    console.log("ready")
+    require('./modules/io.module')(server)
 })
+
+
 
