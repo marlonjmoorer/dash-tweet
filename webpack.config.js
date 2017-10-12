@@ -2,9 +2,9 @@ var path = require('path')
 var webpack = require('webpack')
 
 module.exports = {
-  entry: './src/main.js',
+  entry: './client/src/main.js',
   output: {
-    path: path.resolve(__dirname, './dist'),
+    path: path.resolve(__dirname,"client",'dist'),
     publicPath: '/dist/',
     filename: 'build.js'
   },
@@ -46,6 +46,7 @@ module.exports = {
   devServer: {
    // historyApiFallback: true,
    // noInfo: true,
+    contentBase: "./client",
     proxy: {
       '/api/*': {
         target: 'http://localhost:4000',
