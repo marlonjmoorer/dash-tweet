@@ -28,7 +28,7 @@ module.exports={
     Strategy:new TwitterStrategy({
         consumerKey:twitterAuth.consumer_key,
         consumerSecret:twitterAuth.consumer_secret,
-        callbackURL: "http://localhost:4000/twitter/success"
+        callbackURL: "http://localhost:4000/api/twitter/success"
     },saveUser),
     createClient
 }

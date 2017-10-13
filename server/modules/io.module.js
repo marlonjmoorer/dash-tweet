@@ -16,7 +16,7 @@ module.exports=(server)=>{
                 client.emit("tweet",tweet)
                 })
                 stream.on('error', function(error) {
-                    throw error;
+                    //throw error;
                 });
             } catch (error) {
                 console.error(error)

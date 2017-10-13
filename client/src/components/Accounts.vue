@@ -1,7 +1,7 @@
 
 
 <template>
-    <v-container grid-list-md text-xs-center>
+    <v-container grid-list-md text-xs-center color="black">
     <v-layout row wrap>
       <v-flex xs12 md4  v-for="account in accounts" :key="account.id">
         <twitter-feed :account="account"></twitter-feed>
@@ -11,16 +11,16 @@
       <v-card>
       </v-card>
     </v-dialog>
-    <a href="http://localhost:4000/twitter/login"> LL</a>
+    
      <v-btn
-              color="pink"
+              color="teal"
               dark
               small
               bottom
               right
               fab
               fixed
-              href="api/twitter/login"
+              href="/api/twitter/login"
               
            >
            <v-icon>add</v-icon>

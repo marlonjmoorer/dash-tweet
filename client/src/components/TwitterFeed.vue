@@ -5,14 +5,23 @@
         <!-- <v-card-media :src="account.profile.photos[0].value" height="200px">
         </v-card-media> -->
         <v-card-title primary-title>
-          <v-avatar size="36px" slot="activator">
+          <v-layout align-center row spacer slot="header">
+          <v-flex xs1>
+             <v-avatar size="36px" slot="activator">
               <img :src="account.profile.photos[0].value" alt="">
-          </v-avatar>
-          <h5>{{account.profile.username}}</h5>
+            </v-avatar>
+          </v-flex>
+          <v-flex xs11>
+            <h5>{{account.profile.username}}</h5>
+          </v-flex>
+        </v-layout>
         </v-card-title>
          <v-list three-line>
           <template v-for="tweet in tweets">
-            <tweet :tweet="tweet" :key="tweet.id"/>
+            <template>
+              <tweet :tweet="tweet" :key="tweet.id"/>
+              <v-divider></v-divider>
+            </template>
           </template>
         </v-list>
         <v-card-actions>

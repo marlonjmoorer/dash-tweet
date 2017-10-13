@@ -17,7 +17,7 @@ passport.deserializeUser(function (id, done) {
     done(null, null);
 });
 router.get('/login', passport.authenticate('twitter'));
-router.get('/success', passport.authenticate('twitter', {failureRedirect: '/'}), (req, res) => {
+router.get('/success', passport.authenticate('twitter', {failureRedirect: '/fail'}), (req, res) => {
     res.redirect("http://localhost:8080")
 });
 router.get('/accounts', (req,res)=>{
@@ -25,6 +25,7 @@ router.get('/accounts', (req,res)=>{
         res.json(accounts)
     })
 });
+
 router.post('/stream', (req,res)=>{
 
     var client = createClient(req.body.account)
