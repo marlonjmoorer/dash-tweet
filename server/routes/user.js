@@ -5,6 +5,7 @@ var router = express.Router()
 
 router.post('/login', (req,res)=>{
 
+    
 var {username,password}=req.body
   users.findOne({username}).then(user=>{
      if(!user){
@@ -13,7 +14,6 @@ var {username,password}=req.body
      if(user.password!=password){
         return res.status(400).json({message:"Incorrect password  for user"})
      }
-
      return res.json({
          success:true
      })

@@ -14,19 +14,9 @@
                             <h3 class="headline mb-0">Login</h3>
                         </v-card-title>
                         <v-container>
-                            <v-form v-model="valid"  ref="form" lazy-validation>
-                                <span>{{error}}</span>
-                                <v-text-field  dark label="Username" v-model="username" :rules="usernameRules" required></v-text-field>
-                                <v-text-field  dark label="Password" v-model="password" :rules="passwordRules" required></v-text-field>
-                                <span>Not a member?
-                                    <a>Sign Up</a>
-                                </span>
-                                <v-btn @click="submit" color="primary" :disabled="!valid">
-                                    Login
-                                </v-btn>
-                                <v-btn @click="clear">clear</v-btn>
-
-                            </v-form>
+                              <v-btn color="primary" href="/api/twitter/login" >Login with Twitter</v-btn>
+                              <v-btn color="primary" @click="login" >Login with Facebook</v-btn>
+                              <v-btn color="primary" href="/api/twitter/login" >Login with Instagram</v-btn>
                         </v-container>
 
                     </v-card>
@@ -56,7 +46,19 @@ export default {
         error:null
     }),
     methods: {
+        login(){
+           let child= window.open("/api/twitter/login",'',' scrollbars=yes,menubar=no,width=500,height=500, resizable=yes,toolbar=no,location=no,status=no')
+            console.log(child)
+            setTimeout(child.close,2000)
+            child.onunload = function(){ 
+               console.log('Child window closed');
+            };
+            child.onload=function(){ 
+               console.log('Child window opened');
+            };
+        },
         submit() {
+            
             this.error=null;
             if (this.$refs.form.validate()) {
                 axios.post("api/login", ({
@@ -75,6 +77,8 @@ export default {
             this.error=null;
             this.$refs.form.reset()
         }
+    },created(){
+
     }
 
 }

@@ -1,28 +1,23 @@
 var express = require("express")
-
-const {users}= require('../db');
+const {User}= require('../db');
+const {twitterHandler} = require('../passports');
 
 var router = express.Router()
-var passport = require('passport');
-const {Strategy,createClient} = require('../modules/twitter.module');
+const {createClient} = require('../modules/twitter.module');
 
-router.use(passport.initialize());
-router.use(passport.session());
-passport.use(Strategy)
-passport.serializeUser(function (user, done) {
-    done(null, user.id);
+router.get('/login', twitterHandler,(req, res) => {
+    console.log("")
+});
+router.get('/success', twitterHandler, (req, res) => {
+    //res.redirect("http://localhost:8080/#/success")
+    res.render("success")
+    //res.sendFile("/Users/marlonmoorer/Workspace/JS/dash-tweet/client/sucess.html")
 });
 
-passport.deserializeUser(function (id, done) {
-    done(null, null);
-});
-router.get('/login', passport.authenticate('twitter'));
-router.get('/success', passport.authenticate('twitter', {failureRedirect: '/fail'}), (req, res) => {
-    res.redirect("http://localhost:8080")
-});
 router.get('/accounts', (req,res)=>{
-    users.find({}).then(accounts=>{
-        res.json(accounts)
+    var id=req.user._id
+    User.findOne(id).then(user=>{
+        res.json(user.accounts)
     })
 });
 
@@ -34,6 +29,5 @@ router.post('/stream', (req,res)=>{
     stream.on("data",(tweet)=>{
         console.log()
     })
-    
 });
 module.exports = router;

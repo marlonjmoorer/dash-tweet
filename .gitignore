@@ -12,3 +12,4 @@ launch.json
 *.ntvs*
 *.njsproj
 *.sln
+.vscode

@@ -1,6 +1,6 @@
 const TwitterStrategy = require("passport-twitter").Strategy
 var mongojs = require('mongojs')
-const {users}= require('../db');
+const {User}= require('../db');
 const {twitterAuth} = require('../config');
 var Twitter = require('twitter');
 
@@ -13,22 +13,40 @@ const createClient = (account) => {
     return client
 }
 
-const saveUser = (access_token_key, access_token_secret, profile, cb) => {
-    users.findOne({"profile.id":profile.id}).then(account=>{
-        if(!account){
-            users.insert({profile,access_token_key, access_token_secret}).then(result=>{
-                return cb(null, profile)
-            })
-        }else{
-            return cb(null, profile)
-        }
-    })
+const saveUser = (request,access_token_key, access_token_secret, profile, cb) => {
+    if (!request.user) {
+        User.findOne({accounts: { $elemMatch: { "profile.id": profile.id } }}).lean().then(user=>{
+            if(user){
+                return cb(null, user)
+            }else{
+                var newUser= new User();
+                newUser.accounts=[{profile,access_token_key, access_token_secret}]
+                newUser.save((err)=>{
+                    return cb(null, newUser);
+                })
+            }
+        })
+    }else{
+        var {user}= request
+        user.accounts.filter(acc=>acc.profile.id!=profile.id)
+        user.accounts.push([{profile,access_token_key, access_token_secret}])
+        user.save(function(err) {
+            if (err)
+                throw err;
+            return cb(null, user);
+        });
+    }
+
+    
+    
 }
 module.exports={
     Strategy:new TwitterStrategy({
         consumerKey:twitterAuth.consumer_key,
         consumerSecret:twitterAuth.consumer_secret,
-        callbackURL: "http://localhost:4000/api/twitter/success"
+        callbackURL: "http://localhost:4000/api/twitter/success",
+        userAuthorizationURL: "https://api.twitter.com/oauth/authenticate?force_login=true",
+        passReqToCallback:true
     },saveUser),
     createClient
 }
