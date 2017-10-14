@@ -52,7 +52,7 @@ module.exports={
     Strategy:new TwitterStrategy({
         consumerKey:twitterAuth.consumer_key,
         consumerSecret:twitterAuth.consumer_secret,
-        callbackURL: "http://localhost:4000/api/twitter/success",
+        callbackURL: twitterAuth.callbackURL,
         userAuthorizationURL: "https://api.twitter.com/oauth/authenticate?force_login=true",
         passReqToCallback:true
     },saveUser),
