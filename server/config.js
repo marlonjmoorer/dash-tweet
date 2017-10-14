@@ -9,6 +9,5 @@ module.exports={
         //access_token_secret:  '...',
     },
     connString:process.env.CONNSTRING
-
 }
 

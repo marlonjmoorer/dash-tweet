@@ -4,16 +4,17 @@ html(lang="en")
         meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         meta(http-equiv="X-UA-Compatible", content="ie=edge")
-        title Document
+        title Success
     body
     
     script.
-        console.log('Foo bar');
         if (window.opener) {
-            window.opener.focus();
-
+            window.opener.focus(); 
+           
+           // setTimeout(window.close,3000)
             if(window.opener.loginCallBack) {
                 window.opener.loginCallBack();
             }
         }
+        window.close()
 

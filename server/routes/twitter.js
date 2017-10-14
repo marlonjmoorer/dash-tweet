@@ -9,16 +9,20 @@ router.get('/login', twitterHandler,(req, res) => {
     console.log("")
 });
 router.get('/success', twitterHandler, (req, res) => {
-    //res.redirect("http://localhost:8080/#/success")
     res.render("success")
-    //res.sendFile("/Users/marlonmoorer/Workspace/JS/dash-tweet/client/sucess.html")
 });
 
 router.get('/accounts', (req,res)=>{
-    var id=req.user._id
-    User.findOne(id).then(user=>{
-        res.json(user.accounts)
-    })
+
+    if(req.user){
+        var id=req.user._id
+        User.findOne(id).lean().then(user=>{
+            res.json(user.accounts)
+        })
+    }else{
+        res.status(500).end()
+    }
+    
 });
 
 router.post('/stream', (req,res)=>{

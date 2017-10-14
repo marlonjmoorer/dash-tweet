@@ -28,8 +28,16 @@ const saveUser = (request,access_token_key, access_token_secret, profile, cb) =>
         })
     }else{
         var {user}= request
-        user.accounts.filter(acc=>acc.profile.id!=profile.id)
-        user.accounts.push([{profile,access_token_key, access_token_secret}])
+        if(user.accounts){
+            if(!user.accounts.find(acc=>acc.profile.id==profile.id)){
+                user.accounts.push({profile,access_token_key, access_token_secret})
+            }
+            
+            
+        }else{
+           
+            user.accounts=[{profile,access_token_key, access_token_secret}]
+        }
         user.save(function(err) {
             if (err)
                 throw err;

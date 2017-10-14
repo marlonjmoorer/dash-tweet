@@ -6,7 +6,6 @@ var session = require('express-session')
 var publicPath=path.join(__dirname,"..",'client')
 const MongoStore = require('connect-mongo')(session);
 const {passport} = require('./passports');
-
 const { connString } = require('./config');
 
 let sess={
@@ -21,21 +20,11 @@ let sess={
 
 if(process.env.NODE_ENV=='production'){
     sess.cookie.secure = true
-    app.use (function (req, res, next) {
-      var schema = (req.headers['x-forwarded-proto'] || '').toLowerCase();
-      if (schema === 'https') {
-        next();
-      } else {
-        res.redirect('https://' + req.headers.host + req.url);
-      }
-    });
-    app.use(express.static(publicPath));
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(publicPath,'index.html'));
-    });
+    require('./prod-setup')(app);
 }else{
-  app.use(require('cors')())  
+  require('./dev-setup')(app);
 }
+
 app.set('views', `${__dirname}/views`)
 app.set('view engine', 'pug')
 
@@ -44,10 +33,10 @@ app.use(parser.urlencoded({extended:true}))
 app.use(session(sess))
 app.use([[passport.initialize(),passport.session()]])
 app.use("/api/twitter",require('./routes/twitter'));
-/* app.get('*', (req, res) => {
+app.get('*', (req, res) => {
   res.sendFile(path.join(publicPath,'index.html'));
 });
- */
+ 
 
 
 module.exports=app;

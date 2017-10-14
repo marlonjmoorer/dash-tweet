@@ -13,11 +13,13 @@
                         <v-card-title primary-title>
                             <h3 class="headline mb-0">Login</h3>
                         </v-card-title>
+                        <v-card-text>
                         <v-container>
-                              <v-btn color="primary" href="/api/twitter/login" >Login with Twitter</v-btn>
+                              <v-btn color="primary" @click="login" >Login with Twitter</v-btn>
                               <v-btn color="primary" @click="login" >Login with Facebook</v-btn>
                               <v-btn color="primary" href="/api/twitter/login" >Login with Instagram</v-btn>
                         </v-container>
+                        </v-card-text>
 
                     </v-card>
 
@@ -49,13 +51,9 @@ export default {
         login(){
            let child= window.open("/api/twitter/login",'',' scrollbars=yes,menubar=no,width=500,height=500, resizable=yes,toolbar=no,location=no,status=no')
             console.log(child)
-            setTimeout(child.close,2000)
-            child.onunload = function(){ 
-               console.log('Child window closed');
-            };
-            child.onload=function(){ 
-               console.log('Child window opened');
-            };
+           window.loginCallBack=()=>{
+              this.$router.push('dashboard')
+           }
         },
         submit() {
             
@@ -78,7 +76,7 @@ export default {
             this.$refs.form.reset()
         }
     },created(){
-
+    
     }
 
 }
