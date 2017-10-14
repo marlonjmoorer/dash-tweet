@@ -13,17 +13,12 @@ let sess={
     resave:true,
     saveUninitialized:true,
     cookie: { maxAge: 60000 },
-    rolling: true,
+   // rolling: true,
     store: new MongoStore({ url: connString })
 }
 
 
-if(process.env.NODE_ENV=='production'){
-    sess.cookie.secure = true
-    require('./prod-setup')(app);
-}else{
-  require('./dev-setup')(app);
-}
+
 
 app.set('views', `${__dirname}/views`)
 app.set('view engine', 'pug')
@@ -31,9 +26,18 @@ app.set('view engine', 'pug')
 app.use(parser.json())
 app.use(parser.urlencoded({extended:true}))
 app.use(session(sess))
-app.use([[passport.initialize(),passport.session()]])
+app.use(passport.initialize())
+app.use(passport.session())
 app.use("/api/twitter",require('./routes/twitter'));
-app.get('*', (req, res) => {
+if(process.env.NODE_ENV=='production'){
+  //sess.cookie.secure = true
+  require('./prod-setup')(app);
+}else{
+  require('./dev-setup')(app);
+}
+
+
+app.get('/*', (req, res) => {
   res.sendFile(path.join(publicPath,'index.html'));
 });
  
