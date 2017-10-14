@@ -1,4 +1,5 @@
 module.exports = (app) => {
+    var express=require("express")
     var path=require("path")
     var publicPath=path.join(__dirname,"..",'client')
     app.use(function (req, res, next) {
