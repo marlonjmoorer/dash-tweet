@@ -1,4 +1,6 @@
 var express=require("express")
+const cookieParser = require('cookie-parser');
+
 var app= express()
 var path=require("path")
 var parser= require("body-parser")
@@ -7,6 +9,8 @@ var publicPath=path.join(__dirname,"..",'client')
 const MongoStore = require('connect-mongo')(session);
 const {passport} = require('./passports');
 const { connString } = require('./config');
+
+
 
 let sess={
     secret: 'keyboard cat',
@@ -23,6 +27,7 @@ let sess={
 app.set('views', `${__dirname}/views`)
 app.set('view engine', 'pug')
 
+app.use(cookieParser());
 app.use(parser.json())
 app.use(parser.urlencoded({extended:true}))
 app.use(session(sess))
@@ -30,7 +35,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use("/api/twitter",require('./routes/twitter'));
 if(process.env.NODE_ENV=='production'){
-  //sess.cookie.secure = true
+  sess.cookie.secure = true
   require('./prod-setup')(app);
 }else{
   require('./dev-setup')(app);

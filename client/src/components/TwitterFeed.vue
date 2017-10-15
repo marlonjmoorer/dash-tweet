@@ -1,34 +1,27 @@
-
-
 <template>
-   <v-card>
-        <!-- <v-card-media :src="account.profile.photos[0].value" height="200px">
-        </v-card-media> -->
-        <v-card-title primary-title>
-          <v-layout align-center row spacer slot="header">
-          <v-flex xs1>
-             <v-avatar size="36px" slot="activator">
-              <img :src="account.profile.photos[0].value" alt="">
-            </v-avatar>
-          </v-flex>
-          <v-flex xs11>
-            <h5>{{account.profile.username}}</h5>
-          </v-flex>
-        </v-layout>
-        </v-card-title>
-         <v-list three-line>
-          <template v-for="tweet in tweets">
-            <template>
-              <tweet :tweet="tweet" :key="tweet.id"/>
-              <v-divider></v-divider>
-            </template>
-          </template>
+  <div>
+    <v-toolbar color="cyan" dark>
+      <v-toolbar-title>{{account.profile.displayName}}</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-menu offset-y>
+        <v-btn icon slot="activator">
+          <v-icon>more_vert</v-icon>
+        </v-btn>
+        <v-list>
+          <v-list-tile>
+            <v-list-tile-title>
+              Disconnect
+            </v-list-tile-title>
+          </v-list-tile>
         </v-list>
-        <v-card-actions>
-          <v-btn flat color="orange">Share</v-btn>
-          <v-btn flat color="orange">Explore</v-btn>
-        </v-card-actions>
-      </v-card>
+      </v-menu>
+    </v-toolbar>
+    <v-list three-line class="max-column" >
+      <template v-for="tweet in tweets">
+        <tweet :tweet="tweet" :key="tweet.id"/>
+      </template>
+    </v-list>
+  </div>
 </template>
 
 <script>
@@ -38,28 +31,31 @@ import Tweet from './Tweet.vue';
 
 export default {
 
-    data:()=>({
-        tweets:[]
-    }),
-    props:['account'],
-    components:{Tweet},
-    mounted(){
-      // axios.post("api/timeline",{account:this.account}).then(res=>{
-         
-       //})
-       let socket= io({path:"/io"})
-       socket.emit("init",this.account)
-       socket.on("tweet",(tweet)=>{
-         console.log(tweet)
-          this.tweets.push(tweet)
-       })
-    },updated(){
-      console.log(this.tweets)
-    },
-    
+  data: () => ({
+    tweets: []
+  }),
+  props: ['account'],
+  components: { Tweet },
+  mounted() {
+    axios.post("/api/twitter/timeline",{account:this.account}).then(res=>{
+        this.tweets=res.data
+    })
+    let socket = io({ path: "/io" })
+    socket.emit("init", this.account)
+    socket.on("tweet", (tweet) => {
+      console.log(tweet)
+      this.tweets.push(tweet)
+    })
+  }, updated() {
+    console.log(this.tweets)
+  },
+
 }
 </script>
 
-<style>
-
+<style scoped>
+.max-column {
+    max-height: 100vh;
+    overflow: scroll;
+}
 </style>
