@@ -52,6 +52,8 @@ export default {
            let child= window.open("/api/twitter/login",'',' scrollbars=yes,menubar=no,width=500,height=500, resizable=yes,toolbar=no,location=no,status=no')
             console.log(child)
            window.loginCallBack=()=>{
+              // console.log(token)
+               //localStorage.
               this.$router.push('dashboard')
            }
         },

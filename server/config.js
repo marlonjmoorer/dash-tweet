@@ -9,6 +9,7 @@ module.exports={
         //access_token:         '...',
         //access_token_secret:  '...',
     },
+    secret:process.env.SECRET,
     connString:process.env.CONNSTRING
 }
 

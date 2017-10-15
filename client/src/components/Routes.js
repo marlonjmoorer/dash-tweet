@@ -6,7 +6,18 @@ import Success from './Success.vue';
 const routes = [
     {
         path: '/',
-        component: Home
+        component: Home,
+        beforeEnter: (to, from, next) => {
+            console.log('====================================');
+            console.log(to);
+            console.log(from)
+            console.log(next)
+            console.log('====================================');
+            if (!localStorage.getItem('token')) {
+                    next()
+            }else{     next({path:"/dashboard"}) }
+
+        }
     },
     {
         path: '/sucess',
@@ -14,18 +25,8 @@ const routes = [
     }, 
     {
         path: '/dashboard',
-        component: Dashboard,
-        beforeEnter: (to, from, next) => {
-            console.log('====================================');
-            console.log(to);
-            console.log(from)
-            console.log(next)
-            console.log('====================================');
-            //  if (localStorage.getItem('user')) {
-            next()
-            // }else{     next({path:"/"}) }
-
-        }
+        component: Dashboard
+       
     }
 ]
 

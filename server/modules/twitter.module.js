@@ -32,8 +32,6 @@ const saveUser = (request,access_token_key, access_token_secret, profile, cb) =>
             if(!user.accounts.find(acc=>acc.profile.id==profile.id)){
                 user.accounts.push({profile,access_token_key, access_token_secret})
             }
-            
-            
         }else{
            
             user.accounts=[{profile,access_token_key, access_token_secret}]
@@ -43,10 +41,7 @@ const saveUser = (request,access_token_key, access_token_secret, profile, cb) =>
                 throw err;
             return cb(null, user);
         });
-    }
-
-    
-    
+    }   
 }
 module.exports={
     Strategy:new TwitterStrategy({

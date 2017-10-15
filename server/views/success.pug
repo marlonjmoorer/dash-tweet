@@ -8,11 +8,14 @@ html(lang="en")
     body
     
     script.
+        var token="#{token}";
+        
         if (window.opener) {
             window.opener.focus(); 
            
            // setTimeout(window.close,3000)
             if(window.opener.loginCallBack) {
+                localStorage.setItem("token",token)
                 window.opener.loginCallBack();
             }
         }

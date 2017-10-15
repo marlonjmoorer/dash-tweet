@@ -8,12 +8,12 @@ var session = require('express-session')
 var publicPath=path.join(__dirname,"..",'client')
 const MongoStore = require('connect-mongo')(session);
 const {passport} = require('./passports');
-const { connString } = require('./config');
+const { connString,secret } = require('./config');
 
 
 
 let sess={
-    secret: 'keyboard cat',
+    secret,
     resave:true,
     saveUninitialized:true,
     cookie: { maxAge: 60000 },
