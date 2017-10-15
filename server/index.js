@@ -35,7 +35,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use("/api/twitter",require('./routes/twitter'));
 if(process.env.NODE_ENV=='production'){
-  sess.cookie.secure = true
+ // sess.cookie.secure = true
   require('./prod-setup')(app);
 }else{
   require('./dev-setup')(app);
