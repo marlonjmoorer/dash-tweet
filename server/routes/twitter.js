@@ -1,5 +1,5 @@
 var express = require("express")
-const {User} = require('../db');
+const { User,getUserById,disconnectAccount } = require('../models/user.model');
 const {twitterHandler} = require('../passports');
 var jwt = require('jsonwebtoken');
 var router = express.Router()
@@ -28,13 +28,11 @@ router.get('/accounts', (req, res) => {
         }
     }
     if (!userId){return res.status(500).end()}
-    User
-        .findById(userId)
-        .lean()
-        .then(user => {
+    getUserById(userId).then(user => {
             res.json(user.accounts)
-        })
+    })
 });
+
 router.post('/timeline', (req, res) => {
     if (req.body) {
         var client = createClient(req.body.account)
@@ -49,17 +47,9 @@ router.post('/timeline', (req, res) => {
 })
 router.post("/disconnect",(req,res)=>{
     var {profileId}= req.body
-    User.findOne({accounts: { $elemMatch: { "profile.id": profileId } }}).then(user=>{
-        if(user){
-            user.accounts=user.accounts.filter(a=>a.profile.id!=profileId);
-            user.save((err)=>{
-                if(err) throw err
-                res.json({success:true})
-            })
-        }else{
-           res.end()
-        }
-    })
+    disconnectAccount(profileId)
+    .then(()=>res.json({success:true}))
+    .catch(()=>res.status(500).send())
 })
 router.post('/logout', (req, res) => {
 

@@ -15,6 +15,7 @@ module.exports = (server) => {
                 })
                 stream.on('error', function (error) {
                     //throw error;
+                    console.log(error)
                 });
             } catch (error) {
                 console.error(error)

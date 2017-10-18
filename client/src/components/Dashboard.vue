@@ -43,63 +43,68 @@
             <twitter-feed :disconnect="disconnectAccount" :account="account"></twitter-feed>
         </v-flex>
         <!--  <v-navigation-drawer dark persistent light :mini-variant.sync="mini" v-model="drawer">
-                <v-toolbar flat class="transparent">
-                    <v-list class="pa-0">
-                        <v-list-tile avatar>
-                            <v-list-tile-avatar>
-                                <img src="https://randomuser.me/api/portraits/men/85.jpg" />
-                            </v-list-tile-avatar>
-                            <v-list-tile-content>
-                                <v-list-tile-title>John Leider</v-list-tile-title>
-                            </v-list-tile-content>
-                            <v-list-tile-action>
-                                <v-btn icon @click.native.stop="mini = !mini">
-                                    <v-icon>chevron_left</v-icon>
-                                </v-btn>
-                            </v-list-tile-action>
-                        </v-list-tile>
-                    </v-list>
-                </v-toolbar>
-                <v-list class="pt-0" dense>
-                    <v-divider></v-divider>
-                    <v-list-tile v-for="item in items" :key="item.title">
-                        <v-list-tile-action>
-                            <v-icon>{{ item.icon }}</v-icon>
-                        </v-list-tile-action>
-                        <v-list-tile-content>
-                            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-                        </v-list-tile-content>
-                    </v-list-tile>
-                </v-list>
-            </v-navigation-drawer>
-     -->
+                        <v-toolbar flat class="transparent">
+                            <v-list class="pa-0">
+                                <v-list-tile avatar>
+                                    <v-list-tile-avatar>
+                                        <img src="https://randomuser.me/api/portraits/men/85.jpg" />
+                                    </v-list-tile-avatar>
+                                    <v-list-tile-content>
+                                        <v-list-tile-title>John Leider</v-list-tile-title>
+                                    </v-list-tile-content>
+                                    <v-list-tile-action>
+                                        <v-btn icon @click.native.stop="mini = !mini">
+                                            <v-icon>chevron_left</v-icon>
+                                        </v-btn>
+                                    </v-list-tile-action>
+                                </v-list-tile>
+                            </v-list>
+                        </v-toolbar>
+                        <v-list class="pt-0" dense>
+                            <v-divider></v-divider>
+                            <v-list-tile v-for="item in items" :key="item.title">
+                                <v-list-tile-action>
+                                    <v-icon>{{ item.icon }}</v-icon>
+                                </v-list-tile-action>
+                                <v-list-tile-content>
+                                    <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+                                </v-list-tile-content>
+                            </v-list-tile>
+                        </v-list>
+                    </v-navigation-drawer>
+             -->
         <v-bottom-sheet inset v-model="sheet">
-            
-            <v-card>
-                <v-card-title>
-                    <v-select class="headline" :items="displayNames" v-model="selectedAccount" label="Select" single-line bottom></v-select>
-                </v-card-title>
-                <v-card-text>
-                    <v-container grid-list-md>
-                        <v-layout wrap>
-                            <v-flex xs12>
-                                <v-text-field name="input-1" label="Label Text"></v-text-field>
-                            </v-flex>
-                            <v-flex xs12>
-                                <v-text-field name="input-1" label="Label Text" textarea counter="140"></v-text-field>
-                            </v-flex>
-                            <v-flex xs12>
-                                <v-select class="headline" :items="displayNames" v-model="e1" label="Type" single-line bottom></v-select>
-                            </v-flex>
-                        </v-layout>
-                    </v-container>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" flat @click.native="sheet = false">Close</v-btn>
-                    <v-btn color="primary" @click.native="sheet = false">Send</v-btn>
-                </v-card-actions>
-            </v-card>
+            <v-form v-model="valid" ref="form">
+                <v-card>
+                    <v-card-title>
+                        <v-select class="headline" :items="displayNames" v-model="selectedAccount" label="Select" single-line bottom></v-select>
+                    </v-card-title>
+                    <v-card-text>
+
+                        <v-container grid-list-md>
+
+                            <v-layout wrap>
+                                <v-flex xs12>
+                                    <v-text-field name="input-1" label="Label Text"></v-text-field>
+                                </v-flex>
+                                <v-flex xs12>
+                                    <v-text-field name="input-1" label="Label Text" v-model="message" textarea counter="140"></v-text-field>
+                                </v-flex>
+                                <v-flex xs12>
+                                    <v-select class="headline" :items="options" v-model="defaultType" label="Type" single-line bottom></v-select>
+                                </v-flex>
+                            </v-layout>
+                        </v-container>
+
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1"  @click.native="sheet = false" flat>Close</v-btn>
+                        <v-btn color="primary" @click="submit" >Send</v-btn>
+                    </v-card-actions>
+
+                </v-card>
+            </v-form>
         </v-bottom-sheet>
 
     </v-layout>
@@ -114,13 +119,17 @@ export default {
     data: () => ({
         accounts: [],
         options: [
-            { title: "Connect Account", action: () => { alert() } },
-            { title: "Logout", action: () => { } }
+            "Tweet",
+            "Direct Message",
+            "Reply"
         ],
         linkDialog: false,
         sheet: false,
-        
-        
+        message:"",
+        selectedAccount:""
+
+
+
     }),
     computed: {
         displayNames: function() {
@@ -130,16 +139,16 @@ export default {
             }
             return []
         },
-        selectedAccount:function(){
-             console.log(this.accounts.map(a => a.profile))
-            if (this.accounts.length > 0) {
-                return this.displayNames[0]
-            }
-            return null
+        defaultType: function() {
+            return this.options[0]
         }
+
+
     },
     mounted() {
         this.loadAccounts()
+        //this.selectedAccount= this.displayNames[0]
+          
     },
     methods: {
         connect() {
@@ -166,6 +175,13 @@ export default {
             if (confirm("Logout?")) {
                 localStorage.removeItem("token")
                 this.$router.push("/")
+            }
+        },
+        submit() {
+            console.log()
+            if(this.message&&this.selectedAccount){
+                alert("")
+                console.log(this.selectedAccount)
             }
         }
     },

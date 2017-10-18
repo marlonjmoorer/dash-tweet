@@ -1,5 +1,6 @@
 var passport = require('passport');
-const {User}= require('./db');
+const { getUserById} = require('./models/user.model');
+
 const {Strategy}= require('./modules/twitter.module');
 
 passport.serializeUser(function (user, done) {
@@ -7,10 +8,9 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (id, done) {
-    User.findById(id).then(user=>{
+    getUserById(id).then(user=>{
         done(null, user);
     })
-   
 });
 
 passport.use(Strategy)

@@ -22,8 +22,8 @@
         </v-list>
       </v-menu>
     </v-toolbar>
-     <v-alert v-if="newTweets.lenght>0" color="info" icon="info" value="true">
-      This is a info alert.
+     <v-alert v-if="newTweets.length>0" color="info" icon="info" value="true">
+     <button @click="appendNewTweets">   You have {{newTweets.length}} new tweets</button>
     </v-alert>
     <div class="max-column" >
       <template v-for="tweet in tweets">
@@ -46,6 +46,12 @@ export default {
   }),
   props: ['account','disconnect'],
   components: { Tweet },
+  methods:{
+    appendNewTweets(){
+      this.tweets= this.newTweets.concat(this.tweets)
+      this.newTweets=[]
+    }
+  },
   mounted() {
     axios.post("/api/twitter/timeline",{account:this.account}).then(res=>{
         this.tweets=res.data
@@ -57,7 +63,7 @@ export default {
       this.newTweets.push(tweet)
     })
   }, updated() {
-    console.log(this.tweets)
+    console.log(this)
   },
 
 }
