@@ -73,40 +73,7 @@
                         </v-list>
                     </v-navigation-drawer>
              -->
-        <v-bottom-sheet inset v-model="sheet">
-            <v-form v-model="valid" ref="form">
-                <v-card>
-                    <v-card-title>
-                        <v-select class="headline" :items="displayNames" v-model="selectedAccount" label="Select" single-line bottom></v-select>
-                    </v-card-title>
-                    <v-card-text>
-
-                        <v-container grid-list-md>
-
-                            <v-layout wrap>
-                                <v-flex xs12>
-                                    <v-text-field name="input-1" label="Label Text"></v-text-field>
-                                </v-flex>
-                                <v-flex xs12>
-                                    <v-text-field name="input-1" label="Label Text" v-model="message" textarea counter="140"></v-text-field>
-                                </v-flex>
-                                <v-flex xs12>
-                                    <v-select class="headline" :items="options" v-model="defaultType" label="Type" single-line bottom></v-select>
-                                </v-flex>
-                            </v-layout>
-                        </v-container>
-
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1"  @click.native="sheet = false" flat>Close</v-btn>
-                        <v-btn color="primary" @click="submit" >Send</v-btn>
-                    </v-card-actions>
-
-                </v-card>
-            </v-form>
-        </v-bottom-sheet>
-
+        
     </v-layout>
 </template>
 
@@ -118,18 +85,8 @@ import Api from '../Api';
 export default {
     data: () => ({
         accounts: [],
-        options: [
-            "Tweet",
-            "Direct Message",
-            "Reply"
-        ],
         linkDialog: false,
-        sheet: false,
-        message:"",
         selectedAccount:""
-
-
-
     }),
     computed: {
         displayNames: function() {
@@ -175,13 +132,6 @@ export default {
             if (confirm("Logout?")) {
                 localStorage.removeItem("token")
                 this.$router.push("/")
-            }
-        },
-        submit() {
-            console.log()
-            if(this.message&&this.selectedAccount){
-                alert("")
-                console.log(this.selectedAccount)
             }
         }
     },
